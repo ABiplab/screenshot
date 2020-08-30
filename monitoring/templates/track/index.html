@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOME</title>
+</head>
+
+<style>
+img {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  width: 150px;
+}
+
+img:hover {
+  box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+}
+    </style>
+<body>
+  
+    {% if user.is_authenticated %}
+    
+
+    <form method="get" action="{% url 'track_view' %}" >
+        {% csrf_token %}
+        
+       
+        <table class="table table-dark table-responsive-md">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">User name</th>
+                    <th scope="col">Date and time</th>
+                    <th scope="col">Mac Address</th>
+                    <th scope="col">IP Address</th>
+                    <th scope="col">Screenshots</th>
+                </tr>
+            </thead>
+            {% for obj in object_list %} 
+            <tbody>
+                <tr class="bg-info">
+                    <th scope="col">#</th>
+                    <th scope="col">{{ obj.user_name }}</th>
+                    <th scope="col">{{ obj.datetime }}</th>
+                    <th scope="col">{{ obj.mac_address }}</th>
+                    <th scope="col">{{ obj.ip_address}}</th>
+                    
+                    <th scope="col">{% if obj.image %} <img src="{{ obj.image.url}}">{% endif %}</th>
+                    
+                    {% endfor %}  
+                </tr>
+            </tbody>
+        </table>
+
+        
+        <button type="submit" class="btn" > View Track</button>
+    </form>
+    <form method="GET" action="{% url 'track' %}" >
+        {% csrf_token %}
+
+   
+
+
+     <button type="submit" class="btn" > Track</button>
+     <a href="/admin/logout/">Log out</a>
+    </form>
+    {% else %}
+      <p>Please <a href="/admin/login">login</a> to see this page.</p>
+    {% endif %}
+
+</body>
+</html>
